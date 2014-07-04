@@ -33,7 +33,19 @@ class Chat
       request.params[:body] = text
     end
   end
+
+  def task=(text)
+    @conn.post do |request|
+      request.url "/v1/rooms/#{@room_id}/tasks"
+      request.headers = {
+        'X-ChatWorkToken' => CHATWORK_TOKEN
+      }
+      request.params[:body] = text
+      request.params[:to_ids] = @account_id
+    end
+  end
 end
 
 chat = Chat.new
-chat.message = 'Ruby スクリプトからの api 投稿'
+chat.message = 'api でメッセージ追加'
+chat.task = 'api でタスク追加'
